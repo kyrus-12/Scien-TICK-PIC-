@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Scien-TICK-PIC</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+ --g900:#052e16;--g800:#14532d;--g700:#166534;--g600:#16a34a;--g500:#22c55e;--g200:#bbf7d0;--g100:#dcfce7;--g50:#f0fdf4;--line:#86efac;--err:#b91c1c}
+*{box-sizing:border-box}
+body{margin:0 auto;background:linear-gradient(180deg,var(--g50) 0,#fff 320px) fixed;color:var(--g900);font:18px/1.45 "Segoe UI",Arial,Helvetica,sans-serif;padding:16px;max-width:1100px}
+h1{margin:0;font-size:30px;letter-spacing:.3px}
+h2{font-size:20px;margin:0 0 10px;color:var(--g800);padding-left:10px;border-left:6px solid var(--g600)}
+button,select,textarea,input{font:inherit;color:var(--g900);background:#fff;border:2px solid var(--line);border-radius:10px;padding:9px 12px;transition:border-color .15s,box-shadow .15s,background .15s}
+select:focus,textarea:focus,input:focus,button:focus-visible{outline:none;border-color:var(--g600);box-shadow:0 0 0 3px var(--g200)}
+button{cursor:pointer;font-weight:bold;color:var(--g800);border-color:var(--g600)}
+button:hover{background:var(--g100)}
+button.pri{background:var(--g600);border-color:var(--g600);color:#fff}
+button.pri:hover{background:var(--g700);border-color:var(--g700)}
+.card{background:#fff;border:2px solid var(--g200);border-radius:14px;padding:18px;margin-bottom:16px;box-shadow:0 2px 8px rgba(22,101,52,.08)}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;border-bottom:3px solid var(--g600);padding-bottom:10px;margin-bottom:16px}
+.bar.top{background:linear-gradient(135deg,var(--g800),var(--g600));color:#fff;border:0;border-radius:14px;padding:16px 20px;box-shadow:0 4px 12px rgba(22,101,52,.25)}
+.bar.top h1{color:#fff}
+.bar.top .sm{color:var(--g100);font-weight:600}
+.sm{font-size:15px}.hide{display:none}.err{font-weight:bold;color:var(--err);margin-top:6px}
+.sm.err{font-size:15px}
+label.f{display:block;margin:14px 0 4px;font-weight:bold;color:var(--g800);font-size:16px;text-transform:uppercase;letter-spacing:.5px}
+select,input[type=password],input[type=text]{width:100%;max-width:420px}
+#login{margin:28px auto;border-top:8px solid var(--g600);padding:22px}
+#login p{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0 0}
+#login #stuBox p{margin:12px 0 0}
+#pinMsg{background:var(--g50);border-radius:8px;padding:0}
+#pinMsg:not(:empty){padding:10px;border:2px dashed var(--g600)}
+#pinMsg b{color:var(--g700)}
+#pinBan{border:2px dashed var(--g600)!important;background:var(--g50);border-radius:10px!important;padding:10px 12px!important}
+#pinBan b{color:var(--g700)}
+#sName{color:var(--g800)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px;background:#fff;border:2px solid var(--g200);border-left:8px solid var(--g600);border-radius:12px;padding:14px;margin-bottom:14px;box-shadow:0 2px 6px rgba(22,101,52,.07)}
+.txt{display:flex;gap:10px;align-items:flex-start;font-size:22px;font-weight:bold;color:var(--g900)}
+.txt input{width:30px;height:30px;flex:none;margin:2px 0 0;padding:0;accent-color:var(--g600)}
+.num{display:inline-block;background:var(--g600);color:#fff;border-radius:50%;width:30px;height:30px;text-align:center;flex:none;font-size:18px;line-height:30px}
+.tm{font-size:16px;font-weight:normal;display:block;margin-top:4px;color:var(--g700)}
+.ph{display:flex;flex-direction:column;gap:8px}
+.ph img,.ph .empty{width:100%;aspect-ratio:4/3;border:2px solid var(--line);border-radius:10px;object-fit:contain;background:#fff}
+.ph .empty{border-style:dashed;display:flex;align-items:center;justify-content:center;text-align:center;background:var(--g50);color:var(--g700)}
+.prog{height:18px;border:2px solid var(--g600);border-radius:10px;overflow:hidden;margin:10px 0;background:var(--g50)}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,var(--g500),var(--g700))}
+table{border-collapse:separate;border-spacing:0;width:100%;margin-bottom:10px;border:2px solid var(--g200);border-radius:10px;overflow:hidden}
+td,th{border-bottom:1px solid var(--g200);padding:8px 10px;text-align:left;vertical-align:top;font-size:16px}
+th{background:var(--g700);color:#fff}
+tr:nth-child(even) td{background:var(--g50)}
+tr:last-child td{border-bottom:0}
+textarea{width:100%;min-height:90px;margin:6px 0 8px;display:block}
+.card>button{margin-top:6px}
+#tchView .card>.sm{margin-bottom:8px;color:var(--g700)}
+#ov{display:none;position:fixed;inset:0;background:var(--g50);overflow:auto;padding:12px;z-index:9}#ov img{width:100%;border:2px solid var(--g600);border-radius:10px}
+@media (max-width:640px){.row{grid-template-columns:1fr}.txt{font-size:20px}h1{font-size:24px}}
+@media print{body{background:#fff}.noprint{display:none}.card,.row{box-shadow:none}.bar.top{background:#fff;color:#000;box-shadow:none;border-bottom:3px solid var(--g600);border-radius:0}.bar.top h1,.bar.top .sm{color:#000}}
+</style></head><body>
+
+<div class="bar top"><h1>Scien-TICK-PIC</h1><div class="sm" id="clock"></div></div>
+
+<!-- LOGIN -->
+<div id="login" class="card" style="max-width:520px">
+ <h2>Log in</h2>
+ <label class="f">Section</label><select id="sec"></select>
+ <div id="stuBox"><label class="f">Your name</label><select id="stu"></select>
+  <p style="margin:10px 0 0"><button type="button" class="sm" id="reqPin">Request 6-digit PIN</button></p>
+  <div id="pinMsg" class="sm" style="margin-top:6px"></div></div>
+ <label class="f" id="pinL">PIN</label><input type="password" id="pin" inputmode="numeric" autocomplete="off">
+ <p><button class="pri" id="go">Log in</button> <button id="tgl" class="sm">I am the teacher</button></p>
+ <div class="err" id="lerr"></div>
+</div>
+
+<!-- STUDENT -->
+<div id="stuView" class="hide">
+ <div class="card"><div class="bar" style="border:0;margin:0;padding:0"><div><b id="sName" style="font-size:24px"></b><div class="sm" id="sInfo"></div></div><button class="noprint" id="out1">Log out</button></div>
+ <div id="pinBan" class="sm hide" style="border:2px dashed #000;border-radius:6px;padding:8px;margin:8px 0"></div>
+ <div class="prog"><i id="pb" style="width:0"></i></div><b id="pt"></b></div>
+ <div id="list"></div>
+ <div class="noprint card"><button class="pri" id="save">Save checklist as image</button> <button id="print">Print / PDF</button> <button id="rep">Report code for teacher</button>
+ <div class="sm" id="note"></div><textarea id="repOut" class="hide" readonly></textarea></div>
+</div>
+
+<!-- TEACHER -->
+<div id="tchView" class="hide">
+ <div class="bar" style="border:0"><h2 id="tTitle">Teacher panel</h2><button id="out2">Log out</button></div>
+ <div class="card"><h2>1. Today’s assignments &amp; student PINs</h2>
+  <div class="sm">Students get a new random PIN each time they request one (valid today only). To give a student a fixed PIN instead, type a 6-digit PIN and tap Save. “Reset” clears it so the student can request again.</div>
+  <div id="assignTbl" style="margin-top:10px"></div></div>
+ <div class="card"><h2>2. Task list for this section</h2>
+  <div class="sm">One task per line. Only this section uses this list.</div>
+  <label class="f">Maximum tasks per student checklist (0 = no limit)</label>
+  <input type="number" id="maxIn" min="0" max="50" style="width:100px"> <button id="maxSave" class="sm">Save limit</button>
+  <div class="sm">Applies to every student in this section, even if a rule above assigns more.</div>
+  <label class="f">Task list</label><textarea id="taskEd"></textarea><button class="pri" id="taskSave">Save tasks</button> <button id="taskReset" class="sm">Restore original list</button><div class="err sm" id="taskMsg"></div></div>
+ <div class="card"><h2>3. Student reports</h2>
+  <div class="sm">Students tap “Report code for teacher” and send you the code. Paste one or more codes here (one per line).</div>
+  <textarea id="repIn"></textarea><button class="pri" id="repGo">Show reports</button><div id="repTbl" style="margin-top:10px"></div></div>
+ <div class="card"><h2>4. My teacher PIN</h2>
+  <div class="sm">Set your own 6-digit PIN for this section’s teacher login (saved on this device).</div>
+  <input type="password" id="tNew" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="New 6-digit PIN" style="max-width:220px">
+  <button class="pri" id="tSave">Save my PIN</button><div class="err sm" id="tMsg"></div></div>
+ <div class="card"><h2>5. Code helper</h2>
+  <div class="sm">Paste student names (one per line). Copy the result into the <b>students</b> list of a section in the file’s CONFIG.</div>
+  <textarea id="gIn"></textarea>
+  ID prefix: <input type="text" id="gPre" value="S" style="width:80px"> <button id="gGo">Generate code</button>
+  <textarea id="gOut" readonly></textarea></div>
+</div>
+
+<div id="ov"><button id="ovx">Close</button> <a id="dl" download="checklist.png"><button>Try download</button></a>
+ <p class="sm">Press and hold (phone) or right-click (computer) the image, then choose Save image.</p><img id="out" alt="Saved checklist"></div>
+
+<script>
+/* =====================================================================
+   CONFIG — the teacher edits ONLY this block (no database needed).
+   After editing, publish the file again.
+
+   Each section has its OWN teacher, teacher starting PIN (teacherPin) and task list (tasks).
+   The teacher can later change the PIN, the tasks and the maximum tasks per checklist (maxTasks, 0 = no limit) inside the Teacher panel.
+
+   students : ["ID","Full name"]   (no PIN here: each student taps "Request 6-digit PIN" on the
+              login screen and is logged in automatically; the teacher can set/reset PINs in the Teacher panel)
+   assign   : rules, in order. A later rule overrides an earlier one
+              for the students it covers.
+     {to:"all", mode:"random", count:3}            each student gets 3 random tasks
+     {to:"all", mode:"random", count:3, same:true} everyone gets the SAME 3 random tasks
+     {to:["S001","S002"], mode:"random", count:2, same:true}   a group
+     {to:["S003"], mode:"fixed", tasks:["Clean the microscope"]}  one student
+   Random tasks change each day but stay the same all day on every device.
+   ===================================================================== */
+var CONFIG={
+ sections:[
+  {id:"G8-NEWTON",name:"Grade 8 – Newton",teacher:"Mr. Santos",teacherPin:"135790",maxTasks:0,
+   students:[["S001","Ana Reyes"],["S002","Ben Cruz"],["S003","Cara Lim"]],
+   tasks:["Set up the lab table","Wash and dry the glassware","Record today’s observations","Return all materials to the shelf","Wipe the work area","Label the specimen samples"],
+   assign:[
+    {to:"all",mode:"random",count:3},
+    {to:["S002","S003"],mode:"random",count:2,same:true}
+   ]},
+  {id:"G8-EINSTEIN",name:"Grade 8 – Einstein",teacher:"Ms. Garcia",teacherPin:"246810",maxTasks:0,
+   students:[["E001","Dan Uy"],["E002","Eva Sy"]],
+   tasks:["Check the microscope slides","Water the class plants","Measure and log the room temperature","Arrange the chairs"],
+   assign:[
+    {to:"all",mode:"random",count:2,same:true},
+    {to:["E002"],mode:"fixed",tasks:["Clean the microscope","Check the safety kit"]}
+   ]}
+ ]
+};
+/* ===================== end of CONFIG ===================== */
+
+var $=function(i){return document.getElementById(i)};
+function esc(t){var d=document.createElement("div");d.textContent=t;return d.innerHTML}
+function p2(n){return n<10?"0"+n:""+n}
+var N=new Date(),DK=N.getFullYear()+"-"+p2(N.getMonth()+1)+"-"+p2(N.getDate());
+function fmt(ts){return new Date(ts).toLocaleTimeString([],{hour:"numeric",minute:"2-digit"})}
+function tick(){$("clock").textContent=new Date().toLocaleDateString([],{weekday:"long",month:"long",day:"numeric",year:"numeric"})+" · "+new Date().toLocaleTimeString([],{hour:"numeric",minute:"2-digit",second:"2-digit"})}
+tick();setInterval(tick,1000);
+
+function hash(s){var h=1779033703^s.length;for(var i=0;i<s.length;i++){h=Math.imul(h^s.charCodeAt(i),3432918353);h=h<<13|h>>>19}return h>>>0}
+function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+var MK="stp2max";
+function maxT(sec){try{var o=JSON.parse(localStorage.getItem(MK))||{};if(o[sec.id]!==undefined)return +o[sec.id]||0}catch(e){}return +sec.maxTasks||0}
+function tasksFor(sec,id){var a=tasksRaw(sec,id),m=maxT(sec);return m>0?a.slice(0,m):a}
+function tasksRaw(sec,id){
+ var rule=null,ri=-1;
+ sec.assign.forEach(function(r,i){if(r.to==="all"||r.to.indexOf(id)>=0){rule=r;ri=i}});
+ if(!rule)return[];
+ if(rule.mode==="fixed")return rule.tasks.slice();
+ var a=secTasks(sec).slice(),R=rng(hash(DK+sec.id+(rule.same?"g"+ri:id)));
+ for(var i=a.length-1;i>0;i--){var j=Math.floor(R()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}
+ return a.slice(0,Math.min(rule.count,a.length));
+}
+
+/* ---------- login ---------- */
+var teacherMode=false,cur=null;
+CONFIG.sections.forEach(function(s,i){$("sec").add(new Option(s.name,i))});
+function fillStu(){var s=CONFIG.sections[$("sec").value];$("stu").innerHTML="";s.students.forEach(function(x,i){$("stu").add(new Option(x[1],i))})}
+$("sec").onchange=fillStu;fillStu();
+$("tgl").onclick=function(){teacherMode=!teacherMode;$("stuBox").classList.toggle("hide",teacherMode);$("sec").parentNode;$("pinL").textContent=teacherMode?"Teacher PIN (for the section chosen above)":"PIN";$("tgl").textContent=teacherMode?"I am a student":"I am the teacher";$("lerr").textContent="";$("pin").value=""};
+var PK="stp3pins",TK="stp2tpin";
+function ldP(){try{return JSON.parse(localStorage.getItem(PK))||{}}catch(e){return{}}}
+/* A student PIN is either issued by the system (valid today only, replaced on every request)
+   or set by the teacher (fixed until the teacher resets it). */
+function pinRec(sec,st){var o=ldP(),v=o[sec.id+"|"+st[0]];return v===undefined?(st[2]||""):v}
+function stuPin(sec,st){var v=pinRec(sec,st);if(!v)return"";if(typeof v==="string")return v;return(v.t||v.d===DK)?v.p:""}
+function teacherSet(sec,st){var v=pinRec(sec,st);return typeof v==="string"?!!v:!!(v&&v.t)}
+function setPin(sec,id,v,byTeacher){var o=ldP();o[sec.id+"|"+id]=v===""?"":{p:v,t:byTeacher?1:0,d:DK};try{localStorage.setItem(PK,JSON.stringify(o));return true}catch(e){return false}}
+function tPin(sec){try{var v=localStorage.getItem(TK+"|"+sec.id);if(v)return v}catch(e){}return sec.teacherPin||""}
+var TS="stp2tasks",tIdx=0;
+function secTasks(sec){try{var o=JSON.parse(localStorage.getItem(TS))||{};if(o[sec.id]&&o[sec.id].length)return o[sec.id]}catch(e){}return sec.tasks}
+function rnd6(){var a=new Uint32Array(1);crypto.getRandomValues(a);return String(100000+a[0]%900000)}
+$("tgl").addEventListener("click",function(){$("pinMsg").textContent=""});
+$("stu").addEventListener("change",function(){$("pinMsg").textContent=""});
+$("sec").addEventListener("change",function(){$("pinMsg").textContent=""});
+$("reqPin").onclick=function(){
+ var sec=CONFIG.sections[$("sec").value],st=sec.students[$("stu").value];$("lerr").textContent="";
+ if(teacherSet(sec,st)){$("pinMsg").textContent="Your teacher set a PIN for you. Ask your teacher if you forgot it.";return}
+ var np=rnd6();
+ if(!setPin(sec,st[0],np,false)){$("pinMsg").textContent="Could not save the PIN on this device.";return}
+ $("pin").value=np;
+ $("pinMsg").innerHTML="Your PIN today: <b style=\"font-size:28px;letter-spacing:3px\">"+np+"</b><br>It is filled in the PIN box. Tap <b>Log in</b> and the system will check it. Requesting again gives a new PIN.";
+};
+$("go").onclick=function(){
+ var pin=$("pin").value.trim();
+ if(teacherMode){var ts=CONFIG.sections[$("sec").value];if(!pin||pin!==tPin(ts)){$("lerr").textContent="Wrong PIN.";return}
+  tIdx=+$("sec").value;$("tTitle").textContent="Teacher panel · "+(ts.teacher||"Teacher")+" · "+ts.name;$("tMsg").textContent="";$("taskMsg").textContent="";
+  $("taskEd").value=secTasks(ts).join("\n");$("maxIn").value=maxT(ts);
+  $("login").classList.add("hide");$("tchView").classList.remove("hide");drawAssign();return}
+ var sec=CONFIG.sections[$("sec").value],st=sec.students[$("stu").value];
+ var sp=stuPin(sec,st);
+ if(!sp){$("lerr").textContent="No valid PIN yet. Tap “Request 6-digit PIN” first.";return}
+ if(pin!==sp){$("lerr").textContent="Wrong PIN. Check it, or tap “Request 6-digit PIN” for a new one.";return}
+ $("pinMsg").textContent="";$("pin").value="";
+ enterStu(sec,st,teacherSet(sec,st)?"":sp);
+};
+function enterStu(sec,st,newPin){
+ cur={sec:sec,id:st[0],name:st[1],tasks:tasksFor(sec,st[0])};loadP();
+ var b=$("pinBan");
+ if(newPin){b.innerHTML="Your PIN today is <b style=\"font-size:26px;letter-spacing:3px\">"+newPin+"</b> — keep it. It works until the end of today.";b.classList.remove("hide")}
+ else{b.innerHTML="";b.classList.add("hide")}
+ $("login").classList.add("hide");$("stuView").classList.remove("hide");drawStu();
+}
+function logout(){cur=null;$("pin").value="";$("pinMsg").textContent="";$("lerr").textContent="";["stuView","tchView"].forEach(function(i){$(i).classList.add("hide")});$("login").classList.remove("hide")}
+$("out1").onclick=logout;$("out2").onclick=logout;
+
+/* ---------- progress storage ---------- */
+function key(){return"stp2|"+cur.sec.id+"|"+cur.id+"|"+DK}
+function loadP(){
+ var p=null;try{p=JSON.parse(localStorage.getItem(key()))}catch(e){}
+ if(!p||!p.items||p.tasks.join("|")!==cur.tasks.join("|")){p={timeIn:Date.now(),tasks:cur.tasks,items:cur.tasks.map(function(){return{img:"",done:false,time:0}})}}
+ cur.p=p;savP();
+}
+function savP(){try{localStorage.setItem(key(),JSON.stringify(cur.p));return true}catch(e){return false}}
+
+/* ---------- student view ---------- */
+function drawStu(){
+ var p=cur.p,d=p.items.filter(function(x){return x.done}).length,n=p.items.length;
+ $("sName").textContent=cur.name;$("sInfo").textContent=cur.sec.name+" · Time in: "+fmt(p.timeIn);
+ $("pb").style.width=(n?d/n*100:0)+"%";$("pt").textContent=d+" of "+n+" tasks done";
+ if(!n){$("list").innerHTML='<div class="card">No tasks assigned to you today.</div>';return}
+ $("list").innerHTML=cur.tasks.map(function(t,i){var x=p.items[i];
+  return'<div class="row"><div class="txt"><span class="num">'+(i+1)+'</span><input type="checkbox" data-t="'+i+'"'+(x.done?" checked":"")+'><span>'+esc(t)+'<span class="tm">'+(x.done?"Done at "+fmt(x.time):"Not done yet")+'</span></span></div>'+
+  '<div class="ph">'+(x.img?'<img src="'+x.img+'" alt="Proof photo">':'<div class="empty">No photo yet</div>')+
+  '<span class="noprint"><input type="file" accept="image/*" data-p="'+i+'" style="display:none"><button type="button" class="sm" data-pb="'+i+'">'+(x.img?"Replace photo":"Attach photo")+'</button></span></div></div>'}).join("");
+ document.querySelectorAll("[data-t]").forEach(function(c){c.onchange=function(){var x=p.items[+c.dataset.t];
+  if(c.checked&&!x.img){c.checked=false;$("note").textContent="Attach a photo first, then tick.";return}
+  x.done=c.checked;x.time=c.checked?Date.now():0;savP();drawStu()}});
+ document.querySelectorAll("[data-pb]").forEach(function(b){b.onclick=function(){b.previousElementSibling.click()}});
+ document.querySelectorAll("[data-p]").forEach(function(f){f.onchange=function(){var file=f.files[0];if(!file)return;var im=new Image();
+  im.onload=function(){var s=Math.min(1,1000/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=im.width*s;c.height=im.height*s;c.getContext("2d").drawImage(im,0,0,c.width,c.height);
+   p.items[+f.dataset.p].img=c.toDataURL("image/jpeg",.75);if(!savP())$("note").textContent="Storage is full; this photo is kept for this session only.";drawStu()};im.src=URL.createObjectURL(file)}});
+}
+$("print").onclick=function(){window.print()};
+$("rep").onclick=function(){
+ var r={n:cur.name,s:cur.sec.name,d:DK,i:cur.p.timeIn,t:cur.tasks.map(function(t,i){var x=cur.p.items[i];return[t,x.done?1:0,x.time]})};
+ var c=btoa(unescape(encodeURIComponent(JSON.stringify(r))));$("repOut").value=c;$("repOut").classList.remove("hide");$("repOut").select();
+ $("note").textContent="Copy this code and send it to your teacher.";
+};
+function wrap(c,t,x,y,w,lh){var ws=t.split(" "),ln="";ws.forEach(function(wd){var tt=ln?ln+" "+wd:wd;if(c.measureText(tt).width>w&&ln){c.fillText(ln,x,y);y+=lh;ln=wd}else ln=tt});c.fillText(ln,x,y);return y}
+$("save").onclick=function(){
+ var a=cur.tasks,W=1600,H=250,RH=660,c=document.createElement("canvas");if(!a.length)return;
+ c.width=W;c.height=H+RH*a.length;var g=c.getContext("2d"),left=a.length,sv=Date.now(),d=cur.p.items.filter(function(x){return x.done}).length;
+ g.fillStyle="#fff";g.fillRect(0,0,W,c.height);g.fillStyle="#000";g.font="bold 58px Arial";g.fillText("Scien-TICK-PIC · "+cur.name,40,80);
+ g.font="38px Arial";g.fillText(cur.sec.name+" · "+new Date().toLocaleDateString([],{year:"numeric",month:"long",day:"numeric"}),40,138);
+ g.fillText("Time in: "+fmt(cur.p.timeIn)+"   Saved: "+fmt(sv)+"   Done: "+d+" / "+a.length,40,194);
+ a.forEach(function(t,i){var x=cur.p.items[i],y=H+i*RH;g.strokeStyle="#000";g.lineWidth=4;g.strokeRect(20,y,W-40,RH-20);g.beginPath();g.moveTo(W/2,y);g.lineTo(W/2,y+RH-20);g.stroke();
+  g.strokeRect(50,y+40,54,54);g.fillStyle="#000";if(x.done){g.font="bold 50px Arial";g.fillText("✓",57,y+84)}
+  g.font="bold 50px Arial";var ey=wrap(g,(i+1)+". "+t,125,y+84,W/2-165,64);
+  g.font="38px Arial";g.fillText(x.done?"Done at "+fmt(x.time):"Not done",125,ey+60);
+  if(x.img){var im=new Image();im.onload=function(){var bw=W/2-60,bh=RH-60,s=Math.min(bw/im.width,bh/im.height),iw=im.width*s,ih=im.height*s;g.drawImage(im,W/2+30+(bw-iw)/2,y+20+(bh-ih)/2,iw,ih);fin()};im.src=x.img}
+  else{g.font="38px Arial";g.fillText("No photo",W/2+40,y+84);fin()}});
+ function fin(){if(--left===0){var u=c.toDataURL("image/png");$("out").src=u;$("dl").href=u;$("dl").download=cur.name+"-"+DK+".png";$("ov").style.display="block"}}
+};
+$("ovx").onclick=function(){$("ov").style.display="none"};
+
+/* ---------- teacher view ---------- */
+function drawAssign(){
+ var sec=CONFIG.sections[tIdx],h="<table><tr><th>Student</th><th>PIN</th><th>Tasks today</th></tr>";
+ sec.students.forEach(function(s){h+="<tr><td>"+esc(s[1])+" ("+esc(s[0])+")</td><td style=\"white-space:nowrap\"><input type=\"text\" inputmode=\"numeric\" maxlength=\"6\" data-sp=\""+esc(s[0])+"\" value=\""+esc(stuPin(sec,s)||"")+"\" placeholder=\"none\" style=\"width:120px\"> <button type=\"button\" class=\"sm\" data-ss=\""+esc(s[0])+"\">Save</button> <button type=\"button\" class=\"sm\" data-sr=\""+esc(s[0])+"\">Reset</button></td><td>"+tasksFor(sec,s[0]).map(function(t,i){return(i+1)+". "+esc(t)}).join("<br>")+"</td></tr>"});
+ $("assignTbl").innerHTML=h+"</table><div class=\"err sm\" id=\"aMsg\"></div>";
+ function inp(id){return document.querySelector('[data-sp="'+id+'"]')}
+ document.querySelectorAll("[data-ss]").forEach(function(b){b.onclick=function(){
+  var id=b.dataset.ss,v=inp(id).value.trim();
+  if(!/^\d{6}$/.test(v)){$("aMsg").textContent="PIN must be exactly 6 digits.";return}
+  $("aMsg").textContent=setPin(sec,id,v,true)?"PIN saved.":"Could not save."}});
+ document.querySelectorAll("[data-sr]").forEach(function(b){b.onclick=function(){
+  var id=b.dataset.sr;setPin(sec,id,"");inp(id).value="";$("aMsg").textContent="PIN cleared. The student can now request a new one."}});
+}
+$("tSave").onclick=function(){
+ var v=$("tNew").value.trim();
+ if(!/^\d{6}$/.test(v)){$("tMsg").textContent="PIN must be exactly 6 digits.";return}
+ try{localStorage.setItem(TK+"|"+CONFIG.sections[tIdx].id,v);$("tMsg").textContent="Teacher PIN updated.";$("tNew").value=""}catch(e){$("tMsg").textContent="Could not save."}
+};
+$("maxSave").onclick=function(){
+ var sec=CONFIG.sections[tIdx],v=parseInt($("maxIn").value,10);
+ if(isNaN(v)||v<0||v>50){$("taskMsg").textContent="Enter a number from 0 to 50.";return}
+ try{var o=JSON.parse(localStorage.getItem(MK))||{};o[sec.id]=v;localStorage.setItem(MK,JSON.stringify(o));$("taskMsg").textContent=v?"Limit saved: "+v+" tasks per checklist.":"Limit removed.";drawAssign()}catch(e){$("taskMsg").textContent="Could not save."}
+};
+$("taskSave").onclick=function(){
+ var sec=CONFIG.sections[tIdx],a=$("taskEd").value.split("\n").map(function(x){return x.trim()}).filter(Boolean);
+ if(!a.length){$("taskMsg").textContent="Add at least one task.";return}
+ try{var o=JSON.parse(localStorage.getItem(TS))||{};o[sec.id]=a;localStorage.setItem(TS,JSON.stringify(o));$("taskMsg").textContent="Tasks saved ("+a.length+").";drawAssign()}catch(e){$("taskMsg").textContent="Could not save."}
+};
+$("taskReset").onclick=function(){
+ var sec=CONFIG.sections[tIdx];
+ try{var o=JSON.parse(localStorage.getItem(TS))||{};delete o[sec.id];localStorage.setItem(TS,JSON.stringify(o))}catch(e){}
+ $("taskEd").value=sec.tasks.join("\n");$("taskMsg").textContent="Original list restored.";drawAssign()
+};
+$("repGo").onclick=function(){
+ var h="<table><tr><th>Student</th><th>Section</th><th>Date</th><th>Time in</th><th>Done</th><th>Tasks</th></tr>";
+ $("repIn").value.split("\n").map(function(s){return s.trim()}).filter(Boolean).forEach(function(c){
+  try{var r=JSON.parse(decodeURIComponent(escape(atob(c)))),d=r.t.filter(function(x){return x[1]}).length;
+   h+="<tr><td>"+esc(r.n)+"</td><td>"+esc(r.s)+"</td><td>"+esc(r.d)+"</td><td>"+fmt(r.i)+"</td><td>"+d+" / "+r.t.length+"</td><td>"+r.t.map(function(x){return(x[1]?"✓ ":"✗ ")+esc(x[0])+(x[1]?" ("+fmt(x[2])+")":"")}).join("<br>")+"</td></tr>"}
+  catch(e){h+='<tr><td colspan="6">Invalid code: '+esc(c.slice(0,20))+'…</td></tr>'}});
+ $("repTbl").innerHTML=h+"</table>";
+};
+$("gGo").onclick=function(){
+ var pre=$("gPre").value||"S",out="";
+ $("gIn").value.split("\n").map(function(s){return s.trim()}).filter(Boolean).forEach(function(n,i){
+  out+='["'+pre+String(i+1).padStart(3,"0")+'","'+n.replace(/"/g,"")+'"],\n'});
+ $("gOut").value=out;
+};
+</script></body></html>
