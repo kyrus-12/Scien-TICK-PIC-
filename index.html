@@ -59,7 +59,7 @@ textarea{width:100%;min-height:90px;margin:6px 0 8px;display:block}
 
 <!-- LOGIN -->
 <div id="login" class="card" style="max-width:520px">
- <h2>Log in</h2>
+ <h2>Log in Form</h2>
  <label class="f">Section</label><select id="sec"></select>
  <div id="stuBox"><label class="f">Your name</label><select id="stu"></select>
   <p style="margin:10px 0 0"><button type="button" class="sm" id="reqPin">Request 6-digit PIN</button></p>
@@ -128,16 +128,16 @@ textarea{width:100%;min-height:90px;margin:6px 0 8px;display:block}
    ===================================================================== */
 var CONFIG={
  sections:[
-  {id:"G8-NEWTON",name:"Grade 8 – Newton",teacher:"Mr. Santos",teacherPin:"135790",maxTasks:0,
+  {id:"G7-DEDICATED",name:"Grade 7 – Dedicated",teacher:"Mr. Santos",teacherPin:"135790",maxTasks:0,
    students:[["S001","Ana Reyes"],["S002","Ben Cruz"],["S003","Cara Lim"]],
-   tasks:["Set up the lab table","Wash and dry the glassware","Record today’s observations","Return all materials to the shelf","Wipe the work area","Label the specimen samples"],
+   tasks:["Clean the work table","Arrange the chairs properly","Sweep the floor","Wipe the work area","Be kind and respectful to everyone"],
    assign:[
     {to:"all",mode:"random",count:3},
     {to:["S002","S003"],mode:"random",count:2,same:true}
    ]},
-  {id:"G8-EINSTEIN",name:"Grade 8 – Einstein",teacher:"Ms. Garcia",teacherPin:"246810",maxTasks:0,
+  {id:"G7-PRECISE",name:"Grade 7 – Precise",teacher:"Ms. Garcia",teacherPin:"246810",maxTasks:0,
    students:[["E001","Dan Uy"],["E002","Eva Sy"]],
-   tasks:["Check the microscope slides","Water the class plants","Measure and log the room temperature","Arrange the chairs"],
+   tasks:["Clean the work table","Arrange the chairs properly","Sweep the floor","Wipe the work area","Be kind and respectful to everyone"],
    assign:[
     {to:"all",mode:"random",count:2,same:true},
     {to:["E002"],mode:"fixed",tasks:["Clean the microscope","Check the safety kit"]}
@@ -214,7 +214,7 @@ $("go").onclick=function(){
 function enterStu(sec,st,newPin){
  cur={sec:sec,id:st[0],name:st[1],tasks:tasksFor(sec,st[0])};loadP();
  var b=$("pinBan");
- if(newPin){b.innerHTML="Your PIN today is <b style=\"font-size:26px;letter-spacing:3px\">"+newPin+"</b> — keep it. It works until the end of today.";b.classList.remove("hide")}
+ if(newPin){b.innerHTML="Your PIN today is <b style=\"font-size:26px;letter-spacing:3px\">"+newPin+"</b>. It works until the end of today.";b.classList.remove("hide")}
  else{b.innerHTML="";b.classList.add("hide")}
  $("login").classList.add("hide");$("stuView").classList.remove("hide");drawStu();
 }
